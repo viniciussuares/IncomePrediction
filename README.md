@@ -65,4 +65,4 @@ Feel free to contribute with suggestions, improvements, or corrections. To contr
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
-For more information, contact me at [my email](v.suares.s@hotmail.com).
+For more information, contact me at [my email](mailto:v.suares.s@hotmail.com).
