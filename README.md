@@ -13,7 +13,6 @@ Income prediction is a crucial tool for businesses and financial institutions ai
 - **Credit Policies:** Helps financial institutions reduce default rates and improve the profitability of credit portfolios.
 - **Product Personalization:** Companies can adjust offers and products according to consumers' purchasing power, increasing customer satisfaction.
 
-
 ## Project Structure
 
 1. **Data Collection and Preparation**
@@ -51,3 +50,19 @@ Income prediction is a crucial tool for businesses and financial institutions ai
 To install the necessary dependencies, run the following command:
 ```sh
 pip install -r requirements.txt
+```
+
+## Contribution
+Feel free to contribute with suggestions, improvements, or corrections. To contribute:
+
+1. Fork this repository.
+2. Create a branch with your feature (git checkout -b feature/new-feature).
+3. Commit your changes (git commit -m 'Add new feature').
+4. Push to the branch (git push origin feature/new-feature).
+5. Open a Pull Request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+For more information, contact me at [my email](v.suares.s@hotmail.com).
