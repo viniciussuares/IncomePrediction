@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// Internal header. Platform-specific definitions for Flight.
+// Internal header.  Platform-specific definitions for gRPC.
 
 #pragma once
 
@@ -28,4 +28,5 @@
 
 #endif  // _MSC_VER
 
-#include "arrow/util/config.h"  // IWYU pragma: keep
+#include "arrow/util/config.h"                 // IWYU pragma: keep
+#include "arrow/util/windows_compatibility.h"  // IWYU pragma: keep

@@ -21,5 +21,6 @@
 // may incur a slowdown, since it makes the precompiled header heavier to load.
 
 #include "arrow/pch.h"
+#include "arrow/testing/gtest_common.h"
 #include "arrow/testing/gtest_util.h"
 #include "arrow/testing/util.h"

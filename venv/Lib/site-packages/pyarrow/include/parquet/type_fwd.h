@@ -69,9 +69,6 @@ struct ParquetVersion {
 };
 
 class FileMetaData;
-class RowGroupMetaData;
-
-class ColumnDescriptor;
 class SchemaDescriptor;
 
 class ReaderProperties;

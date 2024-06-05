@@ -26,7 +26,8 @@
 #include "parquet/exception.h"
 #include "parquet/platform.h"
 
-namespace parquet::encryption {
+namespace parquet {
+namespace encryption {
 
 /// This class wraps the key access token of a KMS server. If your token changes over
 /// time, you should keep the reference to the KeyAccessToken object and call Refresh()
@@ -63,7 +64,7 @@ struct PARQUET_EXPORT KmsConnectionConfig {
   KmsConnectionConfig();
 
   const std::string& key_access_token() const {
-    if (refreshable_key_access_token == NULLPTR ||
+    if (refreshable_key_access_token == NULL ||
         refreshable_key_access_token->value().empty()) {
       throw ParquetException("key access token is not set!");
     }
@@ -90,4 +91,5 @@ class PARQUET_EXPORT KmsClient {
   virtual ~KmsClient() {}
 };
 
-}  // namespace parquet::encryption
+}  // namespace encryption
+}  // namespace parquet

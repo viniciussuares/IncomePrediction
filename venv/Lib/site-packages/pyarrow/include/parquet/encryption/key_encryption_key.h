@@ -22,7 +22,8 @@
 
 #include "arrow/util/base64.h"
 
-namespace parquet::encryption {
+namespace parquet {
+namespace encryption {
 
 // In the double wrapping mode, each "data encryption key" (DEK) is encrypted with a “key
 // encryption key” (KEK), that in turn is encrypted with a "master encryption key" (MEK).
@@ -54,4 +55,5 @@ class KeyEncryptionKey {
   std::string encoded_wrapped_kek_;
 };
 
-}  // namespace parquet::encryption
+}  // namespace encryption
+}  // namespace parquet

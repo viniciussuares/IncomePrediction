@@ -56,9 +56,6 @@ class RecordBatchStreamReader;
 class RecordBatchFileReader;
 class RecordBatchWriter;
 
-class DictionaryFieldMapper;
-class DictionaryMemo;
-
 namespace feather {
 
 class Reader;

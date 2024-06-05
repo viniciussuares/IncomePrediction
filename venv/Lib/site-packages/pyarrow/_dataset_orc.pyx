@@ -32,15 +32,6 @@ cdef class OrcFileFormat(FileFormat):
         self.init(shared_ptr[CFileFormat](new COrcFileFormat()))
 
     def equals(self, OrcFileFormat other):
-        """
-        Parameters
-        ----------
-        other : pyarrow.dataset.OrcFileFormat
-
-        Returns
-        -------
-        True
-        """
         return True
 
     @property

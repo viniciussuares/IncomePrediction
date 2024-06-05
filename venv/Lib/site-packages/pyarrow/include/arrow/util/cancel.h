@@ -42,7 +42,6 @@ class ARROW_EXPORT StopSource {
   // Consumer API (the side that stops)
   void RequestStop();
   void RequestStop(Status error);
-  // Async-signal-safe. TODO Deprecate this?
   void RequestStopFromSignal(int signum);
 
   StopToken token();
@@ -65,18 +64,7 @@ class ARROW_EXPORT StopToken {
   // A trivial token that never propagates any stop request
   static StopToken Unstoppable() { return StopToken(); }
 
-  /// \brief Check if the stop source has been cancelled.
-  ///
-  /// Producers should call this method, whenever convenient, to check and
-  /// see if they should stop producing early (i.e. have been cancelled).
-  /// Failure to call this method often enough will lead to an unresponsive
-  /// cancellation.
-  ///
-  /// This is part of the producer API (the side that gets asked to stop)
-  /// This method is thread-safe
-  ///
-  /// \return An OK status if the stop source has not been cancelled or a
-  ///         cancel error if the source has been cancelled.
+  // Producer API (the side that gets asked to stopped)
   Status Poll() const;
   bool IsStopRequested() const;
 
@@ -104,10 +92,6 @@ ARROW_EXPORT
 void ResetSignalStopSource();
 
 /// EXPERIMENTAL: Register signal handler triggering the signal-receiving StopSource
-///
-/// Note that those handlers are automatically un-registered in a fork()ed process,
-/// therefore the child process will need to call RegisterCancellingSignalHandler()
-/// if desired.
 ARROW_EXPORT
 Status RegisterCancellingSignalHandler(const std::vector<int>& signals);
 

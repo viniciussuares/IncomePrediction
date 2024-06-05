@@ -21,7 +21,8 @@
 
 #include "parquet/platform.h"
 
-namespace parquet::internal {
+namespace parquet {
+namespace internal {
 
 /// Builds a  bitmap where each set bit indicates the corresponding level is greater
 /// than rhs.
@@ -35,4 +36,5 @@ struct MinMax {
 
 MinMax FindMinMax(const int16_t* levels, int64_t num_levels);
 
-}  // namespace parquet::internal
+}  // namespace internal
+}  // namespace parquet

@@ -20,7 +20,8 @@
 #include "parquet/encryption/kms_client.h"
 #include "parquet/platform.h"
 
-namespace parquet::encryption {
+namespace parquet {
+namespace encryption {
 
 class PARQUET_EXPORT KmsClientFactory {
  public:
@@ -35,4 +36,5 @@ class PARQUET_EXPORT KmsClientFactory {
   bool wrap_locally_;
 };
 
-}  // namespace parquet::encryption
+}  // namespace encryption
+}  // namespace parquet

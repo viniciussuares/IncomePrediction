@@ -37,15 +37,7 @@ class ResizableBuffer;
 namespace json {
 
 struct Kind {
-  enum type : uint8_t {
-    kNull,
-    kBoolean,
-    kNumber,
-    kString,
-    kArray,
-    kObject,
-    kNumberOrString
-  };
+  enum type : uint8_t { kNull, kBoolean, kNumber, kString, kArray, kObject };
 
   static const std::string& Name(Kind::type);
 
@@ -55,6 +47,8 @@ struct Kind {
 
   static Status ForType(const DataType& type, Kind::type* kind);
 };
+
+constexpr int32_t kMaxParserNumRows = 100000;
 
 /// \class BlockParser
 /// \brief A reusable block-based parser for JSON data

@@ -18,4 +18,13 @@
 #pragma once
 
 #include "arrow/util/windows_compatibility.h"
-#include "parquet/windows_fixup.h"
+
+#ifdef _WIN32
+
+// parquet.thrift's OPTIONAL RepetitionType conflicts with a #define from
+// above, so we undefine it
+#ifdef OPTIONAL
+#undef OPTIONAL
+#endif
+
+#endif

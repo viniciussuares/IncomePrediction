@@ -15,6 +15,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+#pragma once
+
 #ifdef _WIN32
 
 // Windows defines min and max macros that mess up std::min/max
@@ -33,6 +35,7 @@
 #endif
 
 #include <winsock2.h>
+#include <windows.h>
 
 #include "arrow/util/windows_fixup.h"
 
