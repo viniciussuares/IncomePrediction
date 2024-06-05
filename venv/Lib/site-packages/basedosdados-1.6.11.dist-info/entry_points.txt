@@ -1,0 +1,3 @@
+[console_scripts]
+basedosdados=basedosdados.cli.cli:cli
+
