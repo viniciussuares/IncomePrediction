@@ -1,37 +1,45 @@
+# GENERAL LIBRARIES
 import os 
+from datetime import datetime
 
-# Data Collection
+
+
+
+# DATA COLLECTION
+
+# Connection to Bigquery
+CURRENT_YEAR = datetime.now().year
+
 BILLING_PROJECT_ID = "incomeprediction-425511"
-SQL_QUERY = """
-SELECT 
-    ano
-    , trimestre
-    , sigla_uf
-    , id_domicilio
-    , V1022 AS situacao_domicilio
-    , V1027 AS peso_sem_pos_estratificacao
-    , V1028 AS peso_com_pos_estratificacao
-    , V2001 AS pessoas_domicilio
-    , V2005 AS condicao_domicilio
-    , V2007 AS sexo
-    , V2009 AS idade
-    , V2010 AS cor
-    , V3001 AS alfabetizado
-    , V3009 AS curso_mais_elevado
-    , V3009A AS curso_mais_elevado_2
-    , V4076 AS tempo_desempregado_procurando_trabalho
-    , VD2002 AS condicao_domicilio
-    , VD2003 AS numero_componente_domicilio
-    , VD3005 AS anos_estudos
-    , VD4001 AS condicao_forca_trabalho
-    , VD4002 AS condicao_ocupacao
-    , VD4003 AS forca_trabalho_potencial
-    , VD4007 AS posicao_ocupacao_principal
-    , VD4016 AS rendimento_mensal_habitual_trabalho_principal
-    , VD4017 AS rendimento_mensal_efetivo_trabalho_principal
-    , VD4019 AS rendimento_mensal_habitual_todos_trabalhos
-    , VD4020 AS rendimento_mensal_habitual_todos_trabalhos
-    , VD4031 AS horas_semana_todos_trabalhos
-FROM basedosdados.br_ibge_pnadc.microdados
-"""
-COLLECTED_DATA_PATH = os.path.join(os.getcwd(), "..", "data", "collected_data.csv")
+
+SQL_QUERY = f"""
+SELECT
+    ano AS year
+    , trimestre AS quarter
+    , sigla_uf AS state
+    , V2009 AS age
+    , V2007 AS sex
+    , V2010 AS race
+    , V3001 AS literate
+    , VD3004 AS highest_educational_level
+    , VD3005 AS years_studied
+    , VD4009 AS worker_type
+    , VD4010 AS work_segment
+    , VD4011 AS occupation_group
+    , VD4012 AS tax_payer
+    , VD4013 AS weekly_worked_hours
+    , VD4016 AS main_work_income
+    , VD4019 AS all_work_income
+    , VD4031 AS weekly_worked_hours_all_jobs
+FROM 
+    basedosdados.br_ibge_pnadc.microdados
+WHERE
+    ano >= {CURRENT_YEAR-3}
+    AND VD4015 <> '2' -- excludes people not payed in money for their work""" 
+
+# Saving collected data
+CURRENT_DIR = os.path.dirname(__file__)
+
+DATA_FOLDER = os.path.abspath(os.path.join(CURRENT_DIR, "..", "data"))
+
+COLLECTED_DATA_PATH = os.path.join(DATA_FOLDER, "collected_data.gz")

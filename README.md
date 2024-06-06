@@ -15,10 +15,11 @@ Income prediction is a crucial tool for businesses and financial institutions ai
 
 ## Project Structure
 
-1. **Data Collection and Preparation**
-   - Download PNAD microdata.
-   - Data cleaning (handling missing values, inconsistencies, and outliers).
-   - Data transformation (normalization, standardization, and encoding of variables).
+1. **Data Collection**
+   - Used intuition and common sense to select a few initial relevant columns
+   - Requested data from BigQuery Data Lake using a SQL string through Python
+   - Collected 2,207,251 rows and 17 columns, saving in a compressed CSV file 
+   - Took around 5 minutes for the query to complete
 
 2. **Exploratory Data Analysis**
    - Visualizations to understand the distribution of variables and their relationship with income.
