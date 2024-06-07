@@ -1,4 +1,3 @@
-# Importing libraries
 import basedosdados as bd
 import pandas as pd
 import config
