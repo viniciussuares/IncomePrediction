@@ -1,50 +1,43 @@
 # Income Prediction Based on Sociodemographic Variables
 
-## Overview
+## Objective
 
-This project aims to develop a machine learning model to estimate the annual income of individuals based on sociodemographic and occupational variables, using microdata from the National Household Sample Survey (PNAD) collected by the Brazilian Institute of Geography and Statistics (IBGE).
+This project aims to develop a machine learning model to estimate the income of individuals based on sociodemographic and occupational variables, using microdata from the National Household Sample Survey (PNAD) collected by the Brazilian Institute of Geography and Statistics (IBGE).
 
-## Problem Description and Understanding
+## Problem and Relevance
 
-Income prediction is a crucial tool for businesses and financial institutions aiming to optimize their marketing strategies, market segmentation, and credit policies. The ability to accurately predict an individual's income can result in significant improvements in the efficiency and effectiveness of advertising campaigns and credit granting.
+Accurate income prediction is essential for:
 
-### Importance and Relevance
-- **Market Segmentation:** Enables the creation of targeted marketing campaigns, increasing conversion rates and optimizing return on investment (ROI).
-- **Credit Policies:** Helps financial institutions reduce default rates and improve the profitability of credit portfolios.
-- **Product Personalization:** Companies can adjust offers and products according to consumers' purchasing power, increasing customer satisfaction.
+- **Market Segmentation:** Enhancing targeted marketing and increasing ROI.
+- **Credit Policies:** Reducing default rates and improving credit portfolio profitability
+- **Product Personalization:** Tailoring offers to consumer purchasing power, boosting customer satisfaction.
 
 ## Project Structure
 
 1. **Data Collection**
-   - Used intuition and common sense to select a few initial relevant columns
-   - Requested data from BigQuery Data Lake using a SQL string through Python
-   - Collected 2,207,251 rows and 17 columns, saving in a compressed CSV file 
-   - Took around 5 minutes for the query to complete
+   - **Initial Selection:** Chose relavant columns based on domain knowledge, intuition and the available data dictionaries. 
+   - **Data Retrieval:** Used SQL through Python to request data from Base dos Dados public Data Lake on BigQuery.
+   - **Results:** Collected 2,207,251 rows and 17 columns, saving in a compressed CSV file 
+   - **Performance**: Query completed in approximately 5 minutes
 
 2. **Exploratory Data Analysis**
-   - Visualizations to understand the distribution of variables and their relationship with income.
-   - Calculation of correlation between independent variables and income.
+   - (...)
 
 3. **Modeling**
-   - Split data into training and testing sets.
-   - Test various machine learning models (Linear Regression, Random Forest, Gradient Boosting).
-   - Evaluate model performance (MAE, RMSE, R²).
+   - (...)
 
 4. **API Development**
-   - Develop API using Flask or FastAPI.
-   - Create endpoints for data input and income estimation output.
-   - Deploy API on cloud platforms (AWS, Heroku, Azure).
+   - (...)
 
 5. **API Testing and Validation**
-   - Unit and integration testing to ensure API functionality.
-   - Collect user feedback for continuous improvement.
+   - (...)
 
 ## Technologies Used
 
-- **Programming Language:** Python
+- **Programming Language:** Python (3.9.19)
 - **Data Science Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn
-- **API Framework:** Flask or FastAPI
-- **Deployment Platforms:** AWS, Heroku, Azure
+- **API Framework:** (...)
+- **Deployment Platforms:** (...)
 
 ## Installation
 
