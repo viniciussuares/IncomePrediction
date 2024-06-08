@@ -17,8 +17,8 @@ Accurate income prediction is essential for:
 1. **Data Collection**
    - **Initial Selection:** Chose relavant columns based on domain knowledge, intuition and the available data dictionaries. 
    - **Data Retrieval:** Used SQL through Python to request data from Base dos Dados public Data Lake on BigQuery.
-   - **Results:** Collected 2,207,251 rows and 17 columns, saving in a compressed CSV file 
-   - **Performance**: Query completed in approximately 5 minutes
+   - **Results:** Collected 794,507 rows and 15 columns, saving in a compressed CSV file 
+   - **Performance**: Query completed in approximately 2 minutes
 
 2. **Exploratory Data Analysis**
    - (...)
