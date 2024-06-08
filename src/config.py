@@ -1,6 +1,5 @@
 # GENERAL LIBRARIES
 import os 
-from datetime import datetime
 
 
 
@@ -8,15 +7,11 @@ from datetime import datetime
 # DATA COLLECTION
 
 # Connection to Bigquery
-CURRENT_YEAR = datetime.now().year
-
 BILLING_PROJECT_ID = "incomeprediction-425511"
 
-SQL_QUERY = f"""
+SQL_QUERY = """
 SELECT
-    ano AS year
-    , trimestre AS quarter
-    , sigla_uf AS state
+    sigla_uf AS state
     , V2009 AS age
     , V2007 AS sex
     , V2010 AS race
@@ -34,7 +29,7 @@ SELECT
 FROM 
     basedosdados.br_ibge_pnadc.microdados
 WHERE
-    ano >= {CURRENT_YEAR-3}
+    ano = 2023
     AND VD4015 <> '2' -- excludes people not payed in money for their work""" 
 
 # Saving collected data
