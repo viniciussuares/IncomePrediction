@@ -2,6 +2,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import scipy.stats as stats
 
 # EDA
 def read_compressed_data(data_path: str, compression='gzip'):
@@ -17,7 +18,7 @@ def make_percentage(float: float):
 def nulls_percentage(df: pd.DataFrame):
     nulls_per_column = df.isnull().mean()
     mapped_nulls = nulls_per_column.sort_values(ascending=False).map(make_percentage)
-    print("Null Percentage by Column: ")
+    print("Nulls Percentage by Column: ")
     return mapped_nulls
 
 def formatted_description(df: pd.DataFrame):
@@ -60,4 +61,25 @@ def winsorizing_outliers(c: pd.Series, fence='outer'):
     col.loc[col > ceiling] = ceiling
 
     return col
-    
+
+def central_measurements(numeric_series: pd.Series):
+    mean = numeric_series.mean()
+    median = numeric_series.median()
+    mode = numeric_series.mode()[0]
+    result = pd.Series([mean, median, mode], index=['mean', 'median', 'mode'])
+    result.sort_values(ascending=True)
+    return result
+
+def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, stat='percent', binwidth=500, cumulative=False, 
+                   color='#088F8F', element='bars'):
+    ax = sns.histplot(col, stat=stat, binwidth=binwidth, cumulative=cumulative, color=color, element=element)
+    plt.title(title)
+    ax.set_ylabel(y_label)
+    ax.set_xlabel(x_label)
+    if element == 'step':
+        ax.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.show()
+
+def check_normality(col: pd.Series):
+    stats.probplot(col, plot=plt)
+    plt.show()
