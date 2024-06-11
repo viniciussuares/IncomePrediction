@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
+from sklearn.feature_selection import mutual_info_regression
 
 # EDA
 def read_compressed_data(data_path: str, compression='gzip'):
@@ -67,7 +68,7 @@ def central_measurements(numeric_series: pd.Series):
     median = numeric_series.median()
     mode = numeric_series.mode()[0]
     result = pd.Series([mean, median, mode], index=['mean', 'median', 'mode'])
-    result.sort_values(ascending=True)
+    result.sort_values(ascending=True, inplace=True)
     return result
 
 def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, stat='percent', binwidth=500, cumulative=False, 
@@ -83,3 +84,73 @@ def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, stat=
 def check_normality(col: pd.Series):
     stats.probplot(col, plot=plt)
     plt.show()
+
+def mean_per_group(df: pd.DataFrame, group_by: str, mean_column: str):
+    return df.groupby(group_by)[mean_column].mean().sort_values(ascending=False)
+
+def show_barplot(cat: list, values: list, title: str, x_label = 'Total Monthly Income (R$)', color='#088F8F'):
+    ax = sns.barplot(y=cat, x=values, color=color)
+    ax.set_xlabel(x_label)
+    plt.title(title)
+    plt.show()
+
+def check_normality(means_array: list, confidence_interval=0.05):
+    return stats.shapiro(means_array).pvalue >= confidence_interval
+
+def check_homogeneity(means_array: list, confidence_interval=0.05):
+    return stats.levene(*means_array).pvalue >= confidence_interval
+
+def test_multiple_means(means_array: list, confidence_interval=0.05):
+    """Performs hypothesis testing on multiple means to understand if differences are significant"""
+    # Choosing between parametric and non-parametric tests
+    if check_normality(means_array) == True and check_homogeneity(means_array) == True:
+        _, pvalue = stats.f_oneway(*means_array)
+    else:
+        _, pvalue = stats.kruskal(*means_array)
+    
+    # Printing results
+    if pvalue < confidence_interval:
+        print('Differences were statistically significant\n p-value was: ', pvalue)
+        return True
+    else:
+        print("Can't reject the null\n p-value was: ", pvalue)
+        return False
+
+def return_region(state):
+    if state in ['RS', 'PR', 'SC']:
+        return 'South'
+    elif state in ['SP', 'RJ', 'MG', 'ES']:
+        return 'Southeast'
+    elif state in ['MT', 'MS', 'GO', 'DF']:
+        return 'Center West'
+    elif state in ['AL', 'BA', 'CE', 'SE', 'MA', 'PB', 'PE', 'PI', 'RN']:
+        return 'Northeast'
+    else:
+        return 'North'
+
+def factorize_column(rank_series: pd.Series, num_col: pd.Series):
+    """This column factorizes a column based upon a numeric rank associated"""
+    ranks = {}
+    for rank, value in enumerate(rank_series, start=1):
+        ranks[value] = rank
+    factorized_column = num_col.map(ranks)
+    return factorized_column
+
+def plot_regplot(df: pd.DataFrame, numeric_columns: list, target: str):
+    for num_col in numeric_columns:
+        sns.regplot(data=df, x=num_col, y=target)
+        plt.title(f'Relationship between {num_col} and Total Monthly Income (R$)')
+        plt.show()
+
+def plot_stripplot(df: pd.DataFrame, cat_columns: list, target: str):
+    for cat in cat_columns:
+        sns.stripplot(data=df, x=cat, y=target)
+        plt.title(f'Relationship between {cat} and Total Monthly Income (R$)')
+        plt.show()
+
+def mutual_information(X, y, discrete_features):
+    mi = mutual_info_regression(X, y, discrete_features=discrete_features)
+    result = pd.Series(mi, index=X.columns)
+    result.sort_values(ascending=False, inplace=True)
+    return result
+
