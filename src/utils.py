@@ -81,20 +81,21 @@ def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, stat=
         ax.grid(True, which='both', linestyle='--', linewidth=0.5)
     plt.show()
 
-def check_normality(col: pd.Series):
+def normality_plot(col: pd.Series):
     stats.probplot(col, plot=plt)
     plt.show()
 
 def mean_per_group(df: pd.DataFrame, group_by: str, mean_column: str):
     return df.groupby(group_by)[mean_column].mean().sort_values(ascending=False)
 
-def show_barplot(cat: list, values: list, title: str, x_label = 'Total Monthly Income (R$)', color='#088F8F'):
+def show_barplot(cat: list, values: list, title: str, x_label = 'Total Monthly Income (R$)', y_label = '', color='#088F8F'):
     ax = sns.barplot(y=cat, x=values, color=color)
     ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
     plt.title(title)
     plt.show()
 
-def check_normality(means_array: list, confidence_interval=0.05):
+def normality_test(means_array: list, confidence_interval=0.05):
     return stats.shapiro(means_array).pvalue >= confidence_interval
 
 def check_homogeneity(means_array: list, confidence_interval=0.05):
@@ -103,7 +104,7 @@ def check_homogeneity(means_array: list, confidence_interval=0.05):
 def test_multiple_means(means_array: list, confidence_interval=0.05):
     """Performs hypothesis testing on multiple means to understand if differences are significant"""
     # Choosing between parametric and non-parametric tests
-    if check_normality(means_array) == True and check_homogeneity(means_array) == True:
+    if normality_test(means_array) == True and check_homogeneity(means_array) == True:
         _, pvalue = stats.f_oneway(*means_array)
     else:
         _, pvalue = stats.kruskal(*means_array)
@@ -154,3 +155,9 @@ def mutual_information(X, y, discrete_features):
     result.sort_values(ascending=False, inplace=True)
     return result
 
+def show_boxplot(df, x, y, x_label, y_label, title, color='#088F8F'):
+    ax = sns.boxplot(data=df, x=x, y=y, color=color)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    plt.title(title)
+    plt.show()
