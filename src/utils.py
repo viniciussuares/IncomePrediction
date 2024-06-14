@@ -1,8 +1,11 @@
-"""This file contains functions used for exploration, model selection, validation, etc"""
+"""This file contains functions used for exploration, pre-processing, model selection, validation, etc"""
+from typing import Union
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
+from scipy.stats.mstats import winsorize
 from sklearn.feature_selection import mutual_info_regression
 
 # EDA
@@ -21,6 +24,13 @@ def nulls_percentage(df: pd.DataFrame):
     mapped_nulls = nulls_per_column.sort_values(ascending=False).map(make_percentage)
     print("Nulls Percentage by Column: ")
     return mapped_nulls
+
+def winsorize_columns(df: pd.DataFrame, lower_percentil: float= 0.01, upper_percentil: float=0.01):
+    """This function winsorizes all columns in a dataframe based on the specied percentils"""
+    df_winsorized = df.copy()
+    for col in df.columns:
+        df_winsorized[col] = winsorize(df[col], limits=(lower_percentil, upper_percentil))
+    return df_winsorized
 
 def formatted_description(df: pd.DataFrame):
     return df.describe().iloc[1:, :].round(1)
