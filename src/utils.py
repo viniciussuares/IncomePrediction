@@ -81,9 +81,9 @@ def central_measurements(numeric_series: pd.Series):
     result.sort_values(ascending=True, inplace=True)
     return result
 
-def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, stat='percent', binwidth=500, cumulative=False, 
+def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, bins='auto', stat='percent', cumulative=False, 
                    color='#088F8F', element='bars'):
-    ax = sns.histplot(col, stat=stat, binwidth=binwidth, cumulative=cumulative, color=color, element=element)
+    ax = sns.histplot(col, stat=stat, cumulative=cumulative, color=color, element=element, bins=bins)
     plt.title(title)
     ax.set_ylabel(y_label)
     ax.set_xlabel(x_label)
@@ -147,16 +147,21 @@ def factorize_column(rank_series: pd.Series, num_col: pd.Series):
     factorized_column = num_col.map(ranks)
     return factorized_column
 
-def plot_regplot(df: pd.DataFrame, numeric_columns: list, target: str):
+def plot_regplot(df: pd.DataFrame, numeric_columns: list, target: str, x_label = '', y_label='Total Monthly Income (R$)', 
+                 color='#088F8F', robust=True, ci=None):
     for num_col in numeric_columns:
-        sns.regplot(data=df, x=num_col, y=target)
-        plt.title(f'Relationship between {num_col} and Total Monthly Income (R$)')
+        ax = sns.regplot(data=df, x=num_col, y=target, color=color, robust=robust, ci=ci)
+        ax.set_ylabel(y_label)
+        ax.set_xlabel(num_col)
+        plt.title(f'Relationship between {num_col} and Income')
         plt.show()
 
-def plot_stripplot(df: pd.DataFrame, cat_columns: list, target: str):
+def plot_stripplot(df: pd.DataFrame, cat_columns: list, target: str, color='#088F8F', y_label=''):
     for cat in cat_columns:
-        sns.stripplot(data=df, x=cat, y=target)
-        plt.title(f'Relationship between {cat} and Total Monthly Income (R$)')
+        ax = sns.stripplot(data=df, x=cat, y=target, color=color)
+        ax.set_ylabel(y_label)
+        ax.set_xlabel(cat)
+        plt.title(f'Income Distribution between Groups in {cat}')
         plt.show()
 
 def mutual_information(X, y, discrete_features):
@@ -171,3 +176,23 @@ def show_boxplot(df, x, y, x_label, y_label, title, color='#088F8F'):
     ax.set_ylabel(y_label)
     plt.title(title)
     plt.show()
+
+def check_spearmanr(num_df: pd.DataFrame, target=Union[np.array, pd.Series], confidence_interval=0.05):
+    """This function uses spearman correlation from scipy stats to calculate the association and a p-value for 2 array_like objects"""
+    # Performing the test
+    corr_matrix, pvalues = stats.spearmanr(num_df, target)
+
+    # Creating labels
+    x_labels = list(num_df.columns)
+    y_labels = list(num_df.columns)
+    x_labels.append(target.name)
+    y_labels.append(target.name)
+
+    # Returning results
+    if (pvalues > confidence_interval).any():
+        print('Cannot assume correlation between all columns')
+        return
+    else:
+        sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', robust=True, xticklabels=x_labels, yticklabels=y_labels)
+        plt.title('Spearman Correlation for Numeric Columns')
+        plt.show()
