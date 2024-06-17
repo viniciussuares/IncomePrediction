@@ -32,55 +32,6 @@ def winsorize_columns(df: pd.DataFrame, lower_percentil: float= 0.01, upper_perc
         df_winsorized[col] = winsorize(df[col], limits=(lower_percentil, upper_percentil))
     return df_winsorized
 
-def formatted_description(df: pd.DataFrame):
-    return df.describe().iloc[1:, :].round(1)
-
-def outlier_percentage(df: pd.DataFrame):
-    """Uses the fence method to identify the percentage of outliers per column"""
-    total_rows = df.shape[0]
-    result = {}
-    for col in df.columns:
-        q1 = df[col].quantile(.25)
-        q3 = df[col].quantile(.75)
-        iqr = q3 - q1
-        inner_fence = df.loc[(df[col] < q1 - 1.5*iqr) | (df[col] > q3 + 1.5*iqr)].shape[0]
-        outer_fence = df.loc[(df[col] < q1 - 3*iqr) | (df[col] > q3 + 3*iqr)].shape[0]
-        result[col] = [make_percentage(inner_fence/total_rows), make_percentage(outer_fence/total_rows)]
-    
-    print('Percentage of Outliers per Column: ')
-    return pd.DataFrame(result, index=['Inner Fence', 'Outer Fence']).T
-
-def winsorizing_outliers(c: pd.Series, fence='outer'):
-    """Winsorizes a column or Series using the fence method to deal with outliers"""
-    col = c.copy()
-    
-    q1 = col.quantile(.25)
-    q3 = col.quantile(.75)
-    iqr = q3 - q1
-
-    if fence == 'outer':
-        iqr *= 3
-    elif fence == 'inner':
-        iqr *= 1.5
-    else:
-        return "Unknown fence method"
-    
-    floor = q1 - iqr
-    ceiling = q3 + iqr
-
-    col.loc[col < floor] = floor 
-    col.loc[col > ceiling] = ceiling
-
-    return col
-
-def central_measurements(numeric_series: pd.Series):
-    mean = numeric_series.mean()
-    median = numeric_series.median()
-    mode = numeric_series.mode()[0]
-    result = pd.Series([mean, median, mode], index=['mean', 'median', 'mode'])
-    result.sort_values(ascending=True, inplace=True)
-    return result
-
 def plot_histogram(col: pd.Series, title: str, y_label: str, x_label: str, bins='auto', stat='percent', cumulative=False, 
                    color='#088F8F', element='bars'):
     ax = sns.histplot(col, stat=stat, cumulative=cumulative, color=color, element=element, bins=bins)
@@ -129,23 +80,15 @@ def test_multiple_means(means_array: list, confidence_interval=0.05):
 
 def return_region(state):
     if state in ['RS', 'PR', 'SC']:
-        return 'South'
+        return 1 #South
     elif state in ['SP', 'RJ', 'MG', 'ES']:
-        return 'Southeast'
+        return 2 #Southeast
     elif state in ['MT', 'MS', 'GO', 'DF']:
-        return 'Center West'
+        return 3 #Center West
     elif state in ['AL', 'BA', 'CE', 'SE', 'MA', 'PB', 'PE', 'PI', 'RN']:
-        return 'Northeast'
+        return 4 #Northeast
     else:
-        return 'North'
-
-def factorize_column(rank_series: pd.Series, num_col: pd.Series):
-    """This column factorizes a column based upon a numeric rank associated"""
-    ranks = {}
-    for rank, value in enumerate(rank_series, start=1):
-        ranks[value] = rank
-    factorized_column = num_col.map(ranks)
-    return factorized_column
+        return 5 #North
 
 def plot_regplot(df: pd.DataFrame, numeric_columns: list, target: str, x_label = '', y_label='Total Monthly Income (R$)', 
                  color='#088F8F', robust=True, ci=None):
@@ -170,13 +113,6 @@ def mutual_information(X, y, discrete_features):
     result.sort_values(ascending=False, inplace=True)
     return result
 
-def show_boxplot(df, x, y, x_label, y_label, title, color='#088F8F'):
-    ax = sns.boxplot(data=df, x=x, y=y, color=color)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    plt.title(title)
-    plt.show()
-
 def check_spearmanr(num_df: pd.DataFrame, target=Union[np.array, pd.Series], confidence_interval=0.05):
     """This function uses spearman correlation from scipy stats to calculate the association and a p-value for 2 array_like objects"""
     # Performing the test
@@ -196,3 +132,24 @@ def check_spearmanr(num_df: pd.DataFrame, target=Union[np.array, pd.Series], con
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', robust=True, xticklabels=x_labels, yticklabels=y_labels)
         plt.title('Spearman Correlation for Numeric Columns')
         plt.show()
+
+def test_differences_subgroups(df: pd.DataFrame, cols_to_test: list, target: str='all_work_income', confidence_interval=0.05):
+    """This function uses non-parametric tests to assess if differences between 2 or more groups are statistically significant"""
+    result = []
+    for col in cols_to_test:
+        unique_groups = df[col].unique()
+        arrays = []
+        for unique in unique_groups:
+            array = np.array(df.loc[df[col] == unique, target])
+            arrays.append(array)
+        if len(arrays) == 2:
+            _, pvalue = stats.mannwhitneyu(arrays[0], arrays[1])
+        elif len(arrays) > 2:
+            _, pvalue = stats.kruskal(*arrays)
+        result.append(f'{pvalue >= confidence_interval}, p-value was {pvalue}, stats was {_}')
+    print('Income means are no different between groups within new features?')
+    return pd.Series(result, index=cols_to_test)
+
+def show_pairplot(df: pd.DataFrame):
+    sns.pairplot(data=df)
+    plt.show()
