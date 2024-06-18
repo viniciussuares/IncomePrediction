@@ -46,38 +46,6 @@ def normality_plot(col: pd.Series):
     stats.probplot(col, plot=plt)
     plt.show()
 
-def mean_per_group(df: pd.DataFrame, group_by: str, mean_column: str):
-    return df.groupby(group_by)[mean_column].mean().sort_values(ascending=False)
-
-def show_barplot(cat: list, values: list, title: str, x_label = 'Total Monthly Income (R$)', y_label = '', color='#088F8F'):
-    ax = sns.barplot(y=cat, x=values, color=color)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    plt.title(title)
-    plt.show()
-
-def normality_test(means_array: list, confidence_interval=0.05):
-    return stats.shapiro(means_array).pvalue >= confidence_interval
-
-def check_homogeneity(means_array: list, confidence_interval=0.05):
-    return stats.levene(*means_array).pvalue >= confidence_interval
-
-def test_multiple_means(means_array: list, confidence_interval=0.05):
-    """Performs hypothesis testing on multiple means to understand if differences are significant"""
-    # Choosing between parametric and non-parametric tests
-    if normality_test(means_array) == True and check_homogeneity(means_array) == True:
-        _, pvalue = stats.f_oneway(*means_array)
-    else:
-        _, pvalue = stats.kruskal(*means_array)
-    
-    # Printing results
-    if pvalue < confidence_interval:
-        print('Differences were statistically significant\n p-value was: ', pvalue)
-        return True
-    else:
-        print("Can't reject the null\n p-value was: ", pvalue)
-        return False
-
 def return_region(state):
     if state in ['RS', 'PR', 'SC']:
         return 1 #South
@@ -150,6 +118,11 @@ def test_differences_subgroups(df: pd.DataFrame, cols_to_test: list, target: str
     print('Income means are no different between groups within new features?')
     return pd.Series(result, index=cols_to_test)
 
-def show_pairplot(df: pd.DataFrame):
-    sns.pairplot(data=df)
+def show_pairplot(df: pd.DataFrame, selected_columns: list, diag_kind = 'kde', corner=True):
+    # joins target to selected column
+    if 'all_work_income' not in selected_columns:
+        selected_columns.insert(0, 'all_work_income')
+    
+    plt.figure(figsize=(15,15))
+    sns.pairplot(data=df[selected_columns], diag_kind=diag_kind, corner=corner)
     plt.show()
