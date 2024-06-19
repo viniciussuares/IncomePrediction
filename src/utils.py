@@ -81,6 +81,13 @@ def mutual_information(X, y, discrete_features):
     result.sort_values(ascending=False, inplace=True)
     return result
 
+def show_barplot(cat: list, values: list, title: str, x_label = 'Total Monthly Income (R$)', y_label = '', color='#088F8F'):
+    ax = sns.barplot(y=cat, x=values, color=color)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    plt.title(title)
+    plt.show()
+
 def check_spearmanr(num_df: pd.DataFrame, target=Union[np.array, pd.Series], confidence_interval=0.05):
     """This function uses spearman correlation from scipy stats to calculate the association and a p-value for 2 array_like objects"""
     # Performing the test
@@ -126,3 +133,35 @@ def show_pairplot(df: pd.DataFrame, selected_columns: list, diag_kind = 'kde', c
     plt.figure(figsize=(15,15))
     sns.pairplot(data=df[selected_columns], diag_kind=diag_kind, corner=corner)
     plt.show()
+
+def show_scatterplot(df: pd.DataFrame, x: str, y: str='all_work_income', hue=None):
+    sns.scatterplot(data=df, x=x, y=y, hue=hue)
+    plt.show()
+
+def discretize_age(age: int):
+    if age < 18: # minors
+        return 1
+    elif age < 25: # adults problem not achieved a stable career or graduation
+        return 2
+    elif age < 65: # mature professionals
+        return 3
+    else:
+        return 4 # retired
+    
+def discretize_weekly_worked_hours_all_jobs(hours: int):
+    if hours < 20: # part-time
+        return 1
+    elif hours < 40: # in between part and full time
+        return 2
+    elif hours < 60: # full time and second job
+        return 3
+    else:
+        return 4 # 
+
+def discretize_years_studied(years: int):
+    if years <= 9: # elemntary school
+        return 1
+    elif years <= 13: # high-school
+        return 2
+    else:
+        return 3 # some college degree
