@@ -28,11 +28,11 @@ class AddFeature(BaseEstimator, TransformerMixin):
 class CategoricalTargetEncoder(BaseEstimator, TransformerMixin):
     """This class builds a transformer to encode categorical columns based on the target mean for each value"""
 
-    def __init__(self, columns=None, smoothing=1):
+    def __init__(self, smoothing=1):
         self.smoothing = smoothing  # term to smooth the average
-        self._columns = columns  
+        self._columns = []  
         self._target_means_ = {}  
-        self._global_mean_ = None   
+        self._global_mean_ = None  
     
     def fit(self, X, y):
         # Defines important variables
@@ -41,7 +41,7 @@ class CategoricalTargetEncoder(BaseEstimator, TransformerMixin):
         concat = pd.concat([X, y], axis=1)
 
         # Updates self
-        self._columns = X.columns
+        self._columns = list(X.columns)
         self._global_mean_ = y.mean()
 
         # For each column, obtain the grouped mean, smooth it, and populate the target means dictionary
