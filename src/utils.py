@@ -105,7 +105,7 @@ def check_spearmanr(num_df: pd.DataFrame, target=Union[np.array, pd.Series], con
         return
     else:
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', robust=True, xticklabels=x_labels, yticklabels=y_labels)
-        plt.title('Spearman Correlation for Numeric Columns')
+        plt.title('Spearman Correlation Between Numeric Columns')
         plt.show()
 
 def test_differences_subgroups(df: pd.DataFrame, cols_to_test: list, target: str='all_work_income', confidence_interval=0.05):
