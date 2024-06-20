@@ -134,8 +134,9 @@ def show_pairplot(df: pd.DataFrame, selected_columns: list, diag_kind = 'kde', c
     sns.pairplot(data=df[selected_columns], diag_kind=diag_kind, corner=corner)
     plt.show()
 
-def show_scatterplot(df: pd.DataFrame, x: str, y: str='all_work_income', hue=None):
-    sns.scatterplot(data=df, x=x, y=y, hue=hue)
+def show_scatterplot(df: pd.DataFrame, x: str, y: str='all_work_income', hue=None, ylabel='Total Monthly Income (R$)'):
+    ax = sns.scatterplot(data=df, x=x, y=y, hue=hue)
+    ax.set_ylabel(ylabel)
     plt.show()
 
 def discretize_age(age: int):
@@ -149,14 +150,16 @@ def discretize_age(age: int):
         return 4 # retired
     
 def discretize_weekly_worked_hours_all_jobs(hours: int):
-    if hours < 20: # part-time
+    if hours <= 20: # part-time
         return 1
-    elif hours < 40: # in between part and full time
+    elif hours <= 40: # in between part and full time
         return 2
-    elif hours < 60: # full time and second job
+    elif hours <= 60: # full time and second part time job
         return 3
+    elif hours <= 80: # up to 2 full time jobs
+        return 4
     else:
-        return 4 # 
+        return 5 #
 
 def discretize_years_studied(years: int):
     if years <= 9: # elemntary school
