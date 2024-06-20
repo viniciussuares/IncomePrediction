@@ -21,15 +21,35 @@ Accurate income prediction is essential for:
    - **Performance**: Query completed in approximately 2 minutes
 
 2. **Exploratory Data Analysis**
+   - **Data Cleaning**: 
+      - Identified and removed outliers across the entire using unsupervised learning (Isolation Tree Method).
+   - **Univariate Analysis**: 
+      - Analyzed income to understand its distribution and key statistics.
+      - Found that nearly 100% of respondents earned up to R$ 10,000 per month.
+      ![Income Cumulative Distribution](./images/income%20cumulative%20distribution.png)
+   - **Bivariate Analysis**: 
+      - Explored relationships between pairs of variables using scatterplots, strip plots, and heatmaps.
+      - Applied mutual information and hypothesis testing to assess the strength of associations.
+      ![Heatmap Numeric Columns](./images/spearman%20corr.png)
+   - **Multivariate Analysis**: 
+      - Examined interactions among multiple variables using pairplots.
+      - Focused on key segments to identify patterns and correlations.
+      ![Pairplot between main variables](./images/pairplot.png)
+   - **Feature Engineering**: 
+      - Developed new features to capture hidden relationships within the data.
+      - Example: Created a feature to discretize studied years.
+      ![New feature to discretize studied years](./images/discretized%20years%20studied.png)
+
+3. **Pre-Processing**
    - (...)
 
-3. **Modeling**
+4. **Modeling**
    - (...)
 
-4. **API Development**
+5. **API Development**
    - (...)
 
-5. **API Testing and Validation**
+6. **API Testing and Validation**
    - (...)
 
 ## Technologies Used
