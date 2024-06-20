@@ -168,3 +168,27 @@ def discretize_years_studied(years: int):
         return 2
     else:
         return 3 # some college degree
+
+def return_white_mixed_race(race: int):
+    if race in [1, 4]:
+        return 1
+    else:
+        return 0
+
+def return_high_school_or_beyond(highest_educational_level: int):
+    if highest_educational_level > 4:
+        return 1
+    else:
+        return 0
+
+def return_domestic_worker(worker_type: int):
+    if worker_type in [3, 4]:
+        return 1
+    else:
+        return 0
+
+def return_selected_segments(work_segment: int):
+    if work_segment in [7, 8, 9]:
+        return 1
+    else:
+        return 0
