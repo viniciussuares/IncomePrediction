@@ -38,3 +38,16 @@ CURRENT_DIR = os.path.dirname(__file__)
 DATA_FOLDER = os.path.abspath(os.path.join(CURRENT_DIR, "..", "data"))
 
 COLLECTED_DATA_PATH = os.path.join(DATA_FOLDER, "collected_data.gz")
+
+
+
+
+
+
+# PRE-PROCESSING
+
+FEATURES = ['state', 'age', 'sex', 'race', 'literate', 'highest_educational_level', 'years_studied', 'worker_type', 'work_segment', 
+                'occupation_group', 'tax_payer', 'weekly_worked_hours', 'weekly_worked_hours_all_jobs']
+
+TARGET = 'all_work_income'
+
