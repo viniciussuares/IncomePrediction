@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from category_encoders import TargetEncoder
 import utils
 
 class AddFeature(BaseEstimator, TransformerMixin):
@@ -100,6 +101,6 @@ pre_processing = Pipeline(
          AddFeature('weekly_worked_hours_all_jobs', 'weekly_worked_hours_v2', utils.discretize_weekly_worked_hours_all_jobs)),
         ('add studied years', 
          AddFeature('years_studied', 'studied_years_v2', utils.discretize_years_studied)),
-        ('target encoder', CategoricalTargetEncoder())
+        ('target encoder', TargetEncoder())
     ]
 )
