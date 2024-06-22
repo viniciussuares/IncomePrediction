@@ -26,45 +26,6 @@ class AddFeature(BaseEstimator, TransformerMixin):
         X_copy[self.new_feature_name] =X[self.existing_column].map(self.function)
         return X_copy
     
-class CategoricalTargetEncoder(BaseEstimator, TransformerMixin):
-    """This class builds a transformer to encode categorical columns based on the target mean for each value"""
-
-    def __init__(self, smoothing=1):
-        self.smoothing = smoothing  # term to smooth the average
-        self._columns = []  
-        self._target_means_ = {}  
-        self._global_mean_ = None  
-    
-    def fit(self, X, y):
-        # Defines important variables
-        X = pd.DataFrame(X)
-        y = pd.Series(y)
-        concat = pd.concat([X, y], axis=1)
-
-        # Updates self
-        self._columns = list(X.columns)
-        self._global_mean_ = y.mean()
-
-        # For each column, obtain the grouped mean, smooth it, and populate the target means dictionary
-        for col in self._columns:
-            col_means = concat.groupby(col)[y.name].mean()
-            counts = concat.groupby(col).size()
-            smoothed_means = (counts * col_means + self.smoothing * self._global_mean_) / (counts + self.smoothing)
-            self._target_means_[col] = smoothed_means
-        
-        return self
-    
-    def transform(self, X):
-        # Making sure it will work with DataFrame
-        X = pd.DataFrame(X)
-        X_transformed = X.copy()
-
-        # For each column, transform it using the dictionary previously populated
-        for col in self._columns:
-            X_transformed[col] = X[col].map(self._target_means_[col]).fillna(self._global_mean_)
-        
-        return X_transformed
-    
 def target_trimming(df: pd.DataFrame, target: str, threshold: float=10000.00):
     """
     This function trims the dataset to contain observations only up to a certain threshold.
