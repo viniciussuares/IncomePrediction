@@ -40,11 +40,11 @@ Accurate income prediction is essential for:
       - Example: Created a feature to discretize studied years.
       ![New feature to discretize studied years](./images/discretized%20years%20studied.png)
 
-3. **Pre-Processing**
-   - (...)
-
-4. **Modeling**
-   - (...)
+3. **Model Production**
+   - **Pre-processing:** Created a Sklearn Pipeline that created new features and performed target encoding avoiding data leakage.
+   - **Model Selection:** Utilized Random Forest (Bagging), LGBM (Boosting), and a combination of both to attempt to predict income with a R$ 500 MAE. 
+   - **Model Evaluation:** Employed cross_validation, data visualization, hypothesis testing, and a combination of metrics to assess model performance.
+   ![Visualizing LGBM and RF predictions X Real Income](./images/real%20x%20rf%20pred%20x%20lgbm%20pred.png)
 
 5. **API Development**
    - (...)
