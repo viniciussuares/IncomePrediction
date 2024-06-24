@@ -29,7 +29,7 @@ Accurate income prediction is essential for:
 
 2. **Exploratory Data Analysis**
    - **Data Cleaning**: 
-      - Identified and removed outliers across the entire using unsupervised learning (Isolation Tree Method).
+      - Identified and removed outliers across the entire dataset using unsupervised learning (Isolation Tree Method).
    - **Univariate Analysis**: 
       - Analyzed income to understand its distribution and key statistics.
       - Found that nearly 100% of respondents earned up to R$ 10,000 per month.
