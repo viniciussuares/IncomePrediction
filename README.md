@@ -16,13 +16,13 @@ Accurate income prediction is essential for:
 - **Accuracy and Final Estimated MAE:** Around 70% of predictions fall within a R$ 780 Mean Absolute Error.
 - **Limitations:**
    - Time: Model was trained for the year 2023 only.
-   - Income Scope: Considered salaries up to R$ 10,000/month (which represented 97% of the dataset ~ 770,000 observations)
+   - Income Scope: Considered salaries up to R$ 10,000/month (which represented 97% of the entire dataset ~ 770,000 observations)
    - Predictions Confidence: Lower salary ranges (up to R$ 4,000 or ~ 85% of the dataset) had significantly lower MAE (< R$ 1000). 
 
 ## Project Structure
 
 1. **Data Collection**
-   - **Initial Selection:** Chose relavant columns based on domain knowledge, intuition and the available data dictionaries. 
+   - **Initial Selection:** Chose relevant columns based on domain knowledge, intuition, and the available data dictionaries. 
    - **Data Retrieval:** Used SQL through Python to request data from Base dos Dados public Data Lake on BigQuery.
    - **Results:** Collected 794,507 rows and 15 columns, saving in a compressed CSV file 
    - **Performance**: Query completed in approximately 2 minutes
@@ -56,22 +56,22 @@ Accurate income prediction is essential for:
       - Averaged (RF and LGBM at the same time)
       ![4 Models Evaluation](./images/mae%20per%20fold%20per%20model.png)
 
-   - **Model Evaluation:** Employed cross_validation, data visualization, hypothesis testing, and a combination of metrics to assess model performance.
-      - Hypothesis testing + CV:
-      ![Post Hoc p-values](./images/post-hoc%20p-values.png)
-      - Sample Analysis:
-      ![Real x Predicted 100 Sample](./images/real%20x%20predicted.png)
-      - MAE Analysis:
-      ![MAE Analysis](./images/mae%20x%20cumulative%20%20x%20income%20range.png)
+   - **Model Evaluation:** Employed cross validation, data visualization, hypothesis testing, and a combination of metrics to assess model performance.
+      - Hypothesis testing + CV:   
+      ![Post Hoc p-values](./images/post-hoc%20p-values.png)   
+      - Sample Analysis:   
+      ![Real x Predicted 100 Sample](./images/real%20x%20predicted.png)   
+      - MAE Analysis:   
+      ![MAE Analysis](./images/mae%20x%20cumulative%20%20x%20income%20range.png)    
 
    - **Future Improvements:**
       - Bring data from different survey questions.
       - Advanced feature engineering.
-      - Using other class of models (e.g., neural networks).
+      - Using other classes of models (e.g., neural networks).
       - Training complementary models specialized in higher income ranges.
 
 4. **API Development:**
-   - In construction..
+   - In construction...
 
 
 ## Technologies Used
