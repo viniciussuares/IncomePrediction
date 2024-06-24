@@ -14,7 +14,6 @@ Accurate income prediction is essential for:
 
 ## Key Results
 - **Accuracy and Final Estimated MAE:** Around 70% of predictions fall within a R$ 780 Mean Absolute Error.
-- **R² Score**: 54% of the variability in the income is explained by the model using selected variables.
 - **Limitations:**
    - Time: Model was trained for the year 2023 only.
    - Income Scope: Considered salaries up to R$ 10,000/month (which represented 97% of the dataset ~ 770,000 observations)
