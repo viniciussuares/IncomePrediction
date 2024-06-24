@@ -2,7 +2,7 @@
 
 ## Objective
 
-This project aims to develop a machine learning model to estimate the income of individuals based on sociodemographic and occupational variables, using microdata from the National Household Sample Survey (PNAD) collected by the Brazilian Institute of Geography and Statistics (IBGE).
+This project aims to develop a machine learning model to estimate the monthly income of individuals based on sociodemographic and occupational variables, using microdata from the National Household Sample Survey (PNAD) collected by the Brazilian Institute of Geography and Statistics (IBGE).
 
 ## Problem and Relevance
 
@@ -11,6 +11,14 @@ Accurate income prediction is essential for:
 - **Market Segmentation:** Enhancing targeted marketing and increasing ROI.
 - **Credit Policies:** Reducing default rates and improving credit portfolio profitability
 - **Product Personalization:** Tailoring offers to consumer purchasing power, boosting customer satisfaction.
+
+## Key Results
+- **Accuracy and Final Estimated MAE:** Around 70% of predictions fall within a R$ 780 Mean Absolute Error.
+- **R² Score**: 54% of the variability in the income is explained by the model using selected variables.
+- **Limitations:**
+   - Time: Model was trained for the year 2023 only.
+   - Income Scope: Considered salaries up to R$ 10,000/month (which represented 97% of the dataset ~ 770,000 observations)
+   - Predictions Confidence: Lower salary ranges (up to R$ 4,000 or ~ 85% of the dataset) had significantly lower MAE (< R$ 1000). 
 
 ## Project Structure
 
@@ -41,23 +49,38 @@ Accurate income prediction is essential for:
       ![New feature to discretize studied years](./images/discretized%20years%20studied.png)
 
 3. **Model Production**
-   - **Pre-processing:** Created a Sklearn Pipeline that created new features and performed target encoding avoiding data leakage.
-   - **Model Selection:** Utilized Random Forest (Bagging), LGBM (Boosting), and a combination of both to attempt to predict income with a R$ 500 MAE. 
+   - **Pre-processing:** Created a Sklearn Pipeline for feature engineering and target encoding to avoid data leakage.
+   - **Model Selection:** Tested 4 tree-based models because the reasoning to determine salary follows a tree-thought process:
+      - Random Forest (RF)
+      - LightGBM (LGBM)
+      - Stacked (RF first, then LGBM)
+      - Averaged (RF and LGBM at the same time)
+      ![4 Models Evaluation](./images/mae%20per%20fold%20per%20model.png)
+
    - **Model Evaluation:** Employed cross_validation, data visualization, hypothesis testing, and a combination of metrics to assess model performance.
-   ![Visualizing LGBM and RF predictions X Real Income](./images/real%20x%20rf%20pred%20x%20lgbm%20pred.png)
+      - Hypothesis testing + CV:
+      ![Post Hoc p-values](./images/post-hoc%20p-values.png)
+      - Sample Analysis:
+      ![Real x Predicted 100 Sample](./images/real%20x%20predicted.png)
+      - MAE Analysis:
+      ![MAE Analysis](./images/mae%20x%20cumulative%20%20x%20income%20range.png)
 
-5. **API Development**
-   - (...)
+   - **Future Improvements:**
+      - Bring data from different survey questions.
+      - Advanced feature engineering.
+      - Using other class of models (e.g., neural networks).
+      - Training complementary models specialized in higher income ranges.
 
-6. **API Testing and Validation**
-   - (...)
+4. **API Development:**
+   - In construction..
+
 
 ## Technologies Used
 
-- **Programming Language:** Python (3.9.19)
-- **Data Science Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn
-- **API Framework:** (...)
-- **Deployment Platforms:** (...)
+- **Programming Language:** Python (3.9.19), HTML
+- **Data Science Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, LGBM, Scipy
+- **API Framework:** Flask
+- **Deployment Platforms:** Heroku
 
 ## Installation
 
