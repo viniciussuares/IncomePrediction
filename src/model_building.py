@@ -16,7 +16,7 @@ def create_x_y(data_path: str, target: str, features: list):
 def instantiate_final_model():
     random_forest = RandomForestRegressor(min_samples_split=16)
     random_forest_pipeline = Pipeline(steps=[('pre-processing', pre_processing), ('model', random_forest)])
-    light_gbm = LGBMRegressor(n_estimators=300, force_row_wise=True, num_leaves=150)
+    light_gbm = LGBMRegressor(n_estimators=500, force_row_wise=True, num_leaves=200)
     light_gbm_pipeline = Pipeline(steps=[('pre-processing', pre_processing), ('model', light_gbm)])
     return VotingRegressor(estimators=[('Random Forest', random_forest_pipeline), ('Light GBM', light_gbm_pipeline)])
 
@@ -25,7 +25,7 @@ def train_final_model(final_model, X, y):
     print('Model trained successfully!')
 
 def save_final_model(final_model, path):
-    dump(final_model, path, compress=('lzma', 9))
+    dump(final_model, path, compress=True)
     print('Model saved successfully!')
     
 def main():

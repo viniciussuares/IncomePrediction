@@ -60,5 +60,5 @@ TARGET = 'all_work_income'
 # MODEL BUILDING
 MODEL_FOLDER = os.path.abspath(os.path.join(CURRENT_DIR, "..", "model"))
 
-TRAINED_MODEL_PATH = os.path.join(MODEL_FOLDER, "model.pkl")
+TRAINED_MODEL_PATH = os.path.join(MODEL_FOLDER, "model.joblib")
 
