@@ -62,3 +62,13 @@ MODEL_FOLDER = os.path.abspath(os.path.join(CURRENT_DIR, "..", "model"))
 
 TRAINED_MODEL_PATH = os.path.join(MODEL_FOLDER, "model.joblib")
 
+
+
+
+
+
+
+# FLASK API
+DEBUG_MODE = True	
+STATES = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO',
+          'RR', 'SC', 'SP', 'SE', 'TO']
