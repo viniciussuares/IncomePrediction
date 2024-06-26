@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h1 {
+    font-size: 28px;
+}
+h2 {
+    font-size: 20px;
+}
+label {
+    display: block;
+    margin-top: 10px;
+}
+input[type="text"], input[type="number"], input[type="submit"] {
+    margin-top: 5px;
+    padding: 5px;
+    width: 400px;
+}
+.section {
+    margin-bottom: 20px;
+}
+.note {
+    font-size: 12px;
+    color: gray;
+}
+.result {
+    margin-top: 20px;
+    font-weight: bold;
+}

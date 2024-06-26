@@ -69,7 +69,18 @@ def predict():
     except Exception as e:
         return jsonify({'error': 'Prediction failed', 'details': str(e), 'features': features}), 500
 
-    return jsonify({'income_prediction': f'R$ {prediction[0]: .2f}'})
+    # Dummy values for additional outputs for testing purposes
+    prediction_2023 = prediction[0]
+    prediction_adjusted = prediction_2023 * 1.05  # Example adjustment
+    prediction_2023_usd = prediction_2023 / 5.0   # Example conversion rate
+    prediction_adjusted_usd = prediction_adjusted / 5.0
+
+    return jsonify({
+        'prediction_2023': prediction_2023,
+        'prediction_adjusted': prediction_adjusted,
+        'prediction_2023_usd': prediction_2023_usd,
+        'prediction_adjusted_usd': prediction_adjusted_usd
+    })
 
 if __name__ == '__main__':
     app.run(debug=config.DEBUG_MODE)
