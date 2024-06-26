@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Prediction</title>
+</head>
+<body>
+    <h1>Input Variables</h1>
+    <form action="/predict" method="post">
+        <!-- Inputs for each feature -->
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state"><br>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age"><br>
+
+        <label for="sex">Sex:</label>
+        <input type="text" id="sex" name="sex"><br>
+
+        <label for="race">Race:</label>
+        <input type="text" id="race" name="race"><br>
+
+        <label for="literate">Literate:</label>
+        <input type="text" id="literate" name="literate"><br>
+
+        <label for="educational_level">Highest Educational Level:</label>
+        <input type="text" id="educational_level" name="educational_level"><br>
+
+        <label for="studied_years">Studied Years:</label>
+        <input type="text" id="studied_years" name="studied_years"><br>
+
+        <label for="worker_type">Worker Type:</label>
+        <input type="text" id="worker_type" name="worker_type"><br>
+
+        <label for="work_segment">Work Segment:</label>
+        <input type="text" id="work_segment" name="work_segment"><br>
+
+        <label for="occupation_group">Occupation Group:</label>
+        <input type="text" id="occupation_group" name="occupation_group"><br>
+
+        <label for="tax_payer">Tax payer:</label>
+        <input type="text" id="tax_payer" name="tax_payer"><br>
+
+        <label for="hours_range">Weekly Worked Hours Range:</label>
+        <input type="text" id="hours_range" name="hours_range"><br>
+
+        <label for="hours_value">Weekly Worked Hours Value:</label>
+        <input type="text" id="hours_value" name="hours_value"><br>
+
+        <input type="submit" value="Get Prediction">
+    </form>
+</body>
+</html>
