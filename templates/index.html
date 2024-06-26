@@ -3,52 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income Prediction</title>
+    <title>Income Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Input Variables</h1>
-    <form action="/predict" method="post">
-        <!-- Inputs for each feature -->
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state"><br>
+    <h1>Income Predictor</h1>
+    
+    <div class="section">
+        <h2>Objective</h2>
+        <p>This form allows you to input sociodemographic variables to predict the monthly income of individuals in Brazil.</p>
+    </div>
 
-        <label for="age">Age:</label>
-        <input type="text" id="age" name="age"><br>
+    <div class="section">
+        <h2>Limitations</h2>
+        <ul>
+            <li>This model was trained using only data from 2023.</li>
+            <li>The maximum salary during training was R$10,000 (97th percentile). Predictions above this are unreliable.</li>
+            <li>In general, the model accuracy decreases as the salary range increases.</li>
+        </ul>
+        <p>Use the predictions as a guideline rather than a definitive answer.</p>
+    </div>
 
-        <label for="sex">Sex:</label>
-        <input type="text" id="sex" name="sex"><br>
+    <div class="section">
+        <h2>Input Variables</h2>
+        <form id="predictionForm">
+            <!-- Inputs for each feature -->
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" placeholder="E.g., SP" required><br>
 
-        <label for="race">Race:</label>
-        <input type="text" id="race" name="race"><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" placeholder="E.g., 30" min="14" max="120" required><br>
 
-        <label for="literate">Literate:</label>
-        <input type="text" id="literate" name="literate"><br>
+            <label for="sex">Sex:</label>
+            <input type="number" id="sex" name="sex" placeholder="E.g., 1 (Man)" min="1" max="2" required><br>
+            <small>1: Man, 2: Woman</small><br>
 
-        <label for="educational_level">Highest Educational Level:</label>
-        <input type="text" id="educational_level" name="educational_level"><br>
+            <label for="race">Race:</label>
+            <input type="text" id="race" name="race" placeholder="E.g., 1 (White)" required><br>
+            <small>1: White, 2: Black, 3: Asian, 4: Mixed-race, 5: Indigenous, 9: Ignored</small><br>
 
-        <label for="studied_years">Studied Years:</label>
-        <input type="text" id="studied_years" name="studied_years"><br>
+            <label for="literate">Literate:</label>
+            <input type="number" id="literate" name="literate" placeholder="E.g., 1 (Yes)" min="1" max="2" required><br>
+            <small>1: Yes, 2: No</small><br>
 
-        <label for="worker_type">Worker Type:</label>
-        <input type="text" id="worker_type" name="worker_type"><br>
+            <label for="educational_level">Highest Educational Level:</label>
+            <input type="number" id="educational_level" name="educational_level" placeholder="E.g., 5 (Complete High School)" min="1" max="7" required><br>
+            <small>1: No instruction, 2: Incomplete Elementary School, 3: Complete Elementary School, 4: Incomplete High School, 5: Complete High School, 6: Incomplete College, 7: Complete College</small><br>
 
-        <label for="work_segment">Work Segment:</label>
-        <input type="text" id="work_segment" name="work_segment"><br>
+            <label for="studied_years">Studied Years:</label>
+            <input type="number" id="studied_years" name="studied_years" placeholder="E.g., 16" min="0" max="16" required><br>
+            <small>If studied years is greater than 16, put 16</small><br>
 
-        <label for="occupation_group">Occupation Group:</label>
-        <input type="text" id="occupation_group" name="occupation_group"><br>
+            <label for="worker_type">Worker Type:</label>
+            <input type="number" id="worker_type" name="worker_type" placeholder="E.g., 1 (Private sector employee with a signed work card)" min="1" max="10" required><br>
+            <small>
+                1: Private sector employee with a signed work card, 2: Private sector employee without a signed work card, 3: Domestic worker with a signed work card, 4: Domestic worker without a signed work card, 5: Public sector employee with a signed work card, 6: Public sector employee without a signed work card, 7: Military and statutory servant, 8: Employer, 9: Self-employed, 10: Contributing family worker
+            </small><br>
 
-        <label for="tax_payer">Tax payer:</label>
-        <input type="text" id="tax_payer" name="tax_payer"><br>
+            <label for="work_segment">Work Segment:</label>
+            <input type="number" id="work_segment" name="work_segment" placeholder="E.g., 7 (Information and communication)" min="1" max="12" required><br>
+            <small>
+                1: Agriculture, livestock, forestry production, fishing and aquaculture, 2: General industry, 3: Construction, 4: Trade, repair of motor vehicles and motorcycles, 5: Transport, storage and postal services, 6: Accommodation and food services, 7: Information, communication and financial, real estate, professional and administrative activities, 8: Public administration, defense and social security, 9: Education, human health and social services, 10: Other services, 11: Domestic services, 12: Undefined activities
+            </small><br>
 
-        <label for="hours_range">Weekly Worked Hours Range:</label>
-        <input type="text" id="hours_range" name="hours_range"><br>
+            <label for="occupation_group">Occupation Group:</label>
+            <input type="number" id="occupation_group" name="occupation_group" placeholder="E.g., 2 (Professionals of sciences and intellectuals)" min="1" max="11" required><br>
+            <small>
+                1: Directors and managers, 2: Professionals of sciences and intellectuals, 3: Technicians and mid-level professionals, 4: Administrative support workers, 5: Service workers, shop and market salespeople, 6: Skilled agricultural, forestry, hunting and fishing workers, 7: Skilled construction, mechanical arts and other trades workers, 8: Plant and machine operators and assemblers, 9: Elementary occupations, 10: Armed forces, police and military firefighters, 11: Undefined occupations
+            </small><br>
 
-        <label for="hours_value">Weekly Worked Hours Value:</label>
-        <input type="text" id="hours_value" name="hours_value"><br>
+            <label for="tax_payer">Tax payer:</label>
+            <input type="number" id="tax_payer" name="tax_payer" placeholder="E.g., 1 (Yes)" min="1" max="2" required><br>
+            <small>1: Yes, 2: No</small><br>
 
-        <input type="submit" value="Get Prediction">
-    </form>
+            <label for="hours_range">Weekly Worked Hours Range:</label>
+            <input type="number" id="hours_range" name="hours_range" placeholder="E.g., 3 (< 45 hours)" min="1" max="5" required><br>
+            <small>
+                1: Up to 14, 2: Between 15 and 39, 3: Between 40 and 44, 4: Between 45 and 48, 5: 49 or more hours
+            </small><br>
+
+            <label for="hours_value">Weekly Worked Hours Value:</label>
+            <input type="number" id="hours_value" name="hours_value" placeholder="E.g., 45" min="0" max="120" required><br>
+
+            <input type="submit" value="Predict">
+        </form>
+        <div class="note">
+            <p>Note: Ensure all inputs are filled correctly to get an accurate prediction.</p>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Repository</h2>
+        <p>You can find the complete analysis and code on my <a href="https://github.com/viniciussuares/IncomePrediction" target="_blank">GitHub repository</a>.</p>
+    </div>
+
+    <div class="section">
+        <h2>Social Media</h2>
+        <p>Connect with me on <a href="https://www.linkedin.com/in/viniciussuares/" target="_blank">LinkedIn</a>.</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
