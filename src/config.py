@@ -51,3 +51,14 @@ FEATURES = ['state', 'age', 'sex', 'race', 'literate', 'highest_educational_leve
 
 TARGET = 'all_work_income'
 
+
+
+
+
+
+
+# MODEL BUILDING
+MODEL_FOLDER = os.path.abspath(os.path.join(CURRENT_DIR, "..", "model"))
+
+TRAINED_MODEL_PATH = os.path.join(MODEL_FOLDER, "model.pkl")
+
