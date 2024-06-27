@@ -69,6 +69,21 @@ TRAINED_MODEL_PATH = os.path.join(MODEL_FOLDER, "model.joblib")
 
 
 # FLASK API
+INPUT_VALIDATION = {
+    'state': ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 
+              'RO', 'RR', 'SC', 'SP', 'SE', 'TO'],
+    'age': range(14, 121),
+    'sex': [1, 2],
+    'race': [1, 2, 3, 4, 5, 9],
+    'literate': [1, 2],
+    'educational_level': range(1, 8),
+    'studied_years': range(0, 17),
+    'worker_type': range(1, 10),
+    'work_segment': range(1, 13),
+    'occupation_group': range(1, 12),
+    'tax_payer': [1, 2],
+    'hours_range': range(1, 6),
+    'hours_value': range(0, 121)
+}
+
 DEBUG_MODE = True	
-STATES = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO',
-          'RR', 'SC', 'SP', 'SE', 'TO']

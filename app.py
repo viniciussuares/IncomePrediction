@@ -1,86 +1,102 @@
-# Adding src to the system path
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
-
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src')) # Adding src to the system path
 from flask import Flask, request, render_template, jsonify
 from joblib import load
 import config
-import numpy as np
 import pandas as pd
+from datetime import datetime
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+
+# Declare Objects
 app = Flask(__name__)
-
 model = load(config.TRAINED_MODEL_PATH)
 
-# Render HTML
+# App util functions
+def validate_features(input_features: dict, validation_dict: dict=config.INPUT_VALIDATION):
+    """
+    This function validates if input features are in accordance with validation_dict
+    Input: input_features: features from HTML/JSON, validation_dict: dict with all possible values for each feature
+    Output: whether all features are valid, error message, features"""
+    # Initialize variables
+    features_are_valid = True
+    error = None
+    return_features = {key: int(value) if key != 'state' else value for key, value in input_features.items()} # converts to input to int
+
+    # Validates
+    for key in return_features.keys():
+        if return_features[key] not in validation_dict[key]:
+            features_are_valid = False
+            error = {'error': f'{return_features[key]} not in acceptable values for {key}'}
+            logging.debug(f"Input Error: {error}")  # Debug: Log prediction error
+            return_features = None
+            return features_are_valid, error, return_features
+    
+    logging.debug('All input features were valid')
+    return features_are_valid, error, return_features
+
+def make_prediction(valid_input: dict, features_names: list=config.FEATURES):
+    """
+    This function makes predictions based on features provided
+    Input: A valid input dictionary, and a feature names list
+    Output: prediction: float, error: dict"""
+    try:
+        X = pd.DataFrame([valid_input]) # converts input dictionary in a list and them in a DF with 13 columns and 1 row
+        X.columns = features_names
+        prediction = model.predict(X)
+    except Exception as e:
+        error = {'error_message': 'Prediction failed', 'details': str(e)}
+        logging.debug(f"Prediction Error: {error}")  # Debug: Log prediction error
+        return None, error
+    
+    logging.debug('Prediction made succesfully')
+    return prediction[0], None
+
+def adjust_prediction(prediction_2023: float):
+    """
+    This function adjusts the 2023 prediction to the current year
+    """
+    current_year = datetime.now().year
+    years_to_ajust = current_year - 2023
+    return prediction_2023 + years_to_ajust * 115.10836311843748
+
+# App Routes
+
 @app.route('/')
 def home():
+    """Renders homepage"""
     return render_template('index.html')
 
-# Predict
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        # Coleta os dados do formulário e tenta convertê-los para inteiros (exceto 'state')
-        features = [
-            request.form['state'],
-            int(request.form['age']),
-            int(request.form['sex']),
-            int(request.form['race']),
-            int(request.form['literate']),
-            int(request.form['educational_level']),
-            int(request.form['studied_years']),
-            int(request.form['worker_type']),
-            int(request.form['work_segment']),
-            int(request.form['occupation_group']),
-            int(request.form['tax_payer']),
-            int(request.form['hours_range']),
-            int(request.form['hours_value']),
-        ]
-    except (ValueError, KeyError) as e:
-        return jsonify({'error': 'Invalid input data', 'details': str(e)}), 422
+    """Predicts monthly income"""
+    features_are_valid, error, return_features = validate_features(dict(request.form))
+    if features_are_valid:
+        prediction, error = make_prediction(return_features)
 
-    # Validação dos valores de entrada
-    if (features[0] not in config.STATES or
-        not (14 <= features[1] <= 120) or
-        features[2] not in [1, 2] or
-        features[3] not in [1, 2, 3, 4, 5, 9] or
-        features[4] not in [1, 2] or
-        features[5] not in range(1, 8) or
-        features[6] not in range(0, 17) or
-        features[7] not in range(1, 10) or
-        features[8] not in range(1, 13) or
-        features[9] not in range(1, 12) or
-        features[10] not in [1, 2] or
-        features[11] not in range(1, 6) or
-        not (0 <= features[12] <= 120)):
-        return jsonify({'error': 'Invalid input values', 'features': features}), 422
-
-    # Converts input to a DataFrame
-    try:
-        valid_input = pd.DataFrame([features], columns=[
-            'state', 'age', 'sex', 'race', 'literate', 'highest_educational_level',
-            'years_studied', 'worker_type', 'work_segment', 'occupation_group',
-            'tax_payer', 'weekly_worked_hours', 'weekly_worked_hours_all_jobs'])
+        if error:
+            return jsonify(error), 500
         
-        # Predicts
-        prediction = model.predict(valid_input)
-    except Exception as e:
-        return jsonify({'error': 'Prediction failed', 'details': str(e), 'features': features}), 500
+        # Declare return variables
+        prediction_2023 = prediction
+        prediction_adjusted = adjust_prediction(prediction_2023)
+        prediction_2023_usd = prediction_2023 / 5
+        prediction_adjusted_usd = prediction_adjusted / 5
 
-    # Dummy values for additional outputs for testing purposes
-    prediction_2023 = prediction[0]
-    prediction_adjusted = prediction_2023 * 1.05  # Example adjustment
-    prediction_2023_usd = prediction_2023 / 5.0   # Example conversion rate
-    prediction_adjusted_usd = prediction_adjusted / 5.0
-
-    return jsonify({
-        'prediction_2023': prediction_2023,
-        'prediction_adjusted': prediction_adjusted,
-        'prediction_2023_usd': prediction_2023_usd,
-        'prediction_adjusted_usd': prediction_adjusted_usd
-    })
+        logging.debug('Response returned successfully')
+        return jsonify({
+            'prediction_2023': prediction_2023,
+            'prediction_adjusted': prediction_adjusted,
+            'prediction_2023_usd': prediction_2023_usd,
+            'prediction_adjusted_usd': prediction_adjusted_usd
+        })
+    
+    else:
+        logging.debug('Request failed')
+        return jsonify(error), 422
 
 if __name__ == '__main__':
     app.run(debug=config.DEBUG_MODE)
