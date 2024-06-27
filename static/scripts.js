@@ -52,7 +52,8 @@ document.getElementById('predictionForm').addEventListener('submit', function(ev
             body: formData
         })
         .then(response => response.json())
-        .then(data => {
+        .then(data => 
+            {
             // Render response on the html page
             document.getElementById('result').innerHTML = `
                 <p>Predicted Income in 2023: R$ ${data.prediction_2023.toFixed(2)}</p>
